@@ -1,0 +1,10 @@
+{
+  "name": "Who-is-still-standing",
+  "version": "1.0.0",
+  "description": "Game",
+  "author": "Fang ShuweI",
+  "private": true,
+  "scripts": {
+    "postinstall": "npm install express"
+  }
+}
