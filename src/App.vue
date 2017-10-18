@@ -13,6 +13,7 @@
                 <div>
                     Time Left: {{timeLeft}}
                 </div>
+                <div>Question number: {{questionCount}}</div>
                 <div>
                     {{currentQuestion.subject}}
                 </div>
@@ -45,7 +46,8 @@
                 pause: false,
                 message: null,
                 interval: null,
-                timeLeft: 5
+                timeLeft: 20,
+                questionCount: 0
             }
         },
         methods: {
@@ -73,7 +75,8 @@
                     let index = Math.floor(Math.random() * this.questions.length);
                     this.currentQuestion = this.questions[index];
                     this.isAnswerShown = false;
-                    this.timeLeft = 5;
+                    this.timeLeft = 20;
+                    this.questionCount ++;
                     vm.interval = setInterval(function() {
                         vm.timeLeft --;
                         if (vm.timeLeft === 0) {
