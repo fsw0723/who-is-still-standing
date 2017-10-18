@@ -11,6 +11,9 @@
                     Score: {{score}}
                 </div>
                 <div>
+                    Time Left: {{timeLeft}}
+                </div>
+                <div>
                     {{currentQuestion.subject}}
                 </div>
                 <div v-if="isAnswerShown">
@@ -31,25 +34,6 @@
 <script>
     import Question from './Question';
 
-    function Timer(callback, delay) {
-        var timerId, start, remaining = delay;
-
-        this.pause = function () {
-            console.log('pause timer');
-            window.clearTimeout(timerId);
-            remaining -= new Date() - start;
-        };
-
-        this.resume = function () {
-            console.log('resume timer');
-            start = new Date();
-            window.clearTimeout(timerId);
-            timerId = window.setTimeout(callback, remaining);
-        };
-
-        this.resume();
-    }
-
     export default {
         name: 'app',
         data () {
@@ -59,8 +43,9 @@
                 isAnswerShown: false,
                 score: 0,
                 pause: false,
-                timer: null,
-                message: null
+                message: null,
+                interval: null,
+                timeLeft: 5
             }
         },
         methods: {
@@ -79,19 +64,24 @@
             },
             newQuestion: function () {
                 let vm = this;
-                if (this.questions.length === 0 && this.timer) {
-                    this.timer.pause();
-                    this.timer = null;
-                } else if (this.questions.length > 0) {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+
+                if (this.questions.length > 0) {
                     let index = Math.floor(Math.random() * this.questions.length);
                     this.currentQuestion = this.questions[index];
                     this.isAnswerShown = false;
-                    this.timer = new Timer(function () {
-                        vm.questions.splice(index, 1);
-                        vm.newQuestion();
-                    }, 5000);
+                    this.timeLeft = 5;
+                    vm.interval = setInterval(function() {
+                        vm.timeLeft --;
+                        if (vm.timeLeft === 0) {
+                            vm.questions.splice(index, 1);
+                            vm.newQuestion();
+                        }
+                    }, 1000);
                 }
-
             },
             correct: function () {
                 this.score++;
@@ -104,16 +94,24 @@
             },
             pauseTimer: function () {
                 this.pause = true;
-                this.timer.pause();
+                clearInterval(this.interval);
+                this.interval = null;
             },
             resumeTimer: function () {
                 this.pause = false;
-                this.timer.resume();
+                let vm = this;
+                vm.interval = setInterval(function() {
+                    vm.timeLeft --;
+                    if (vm.timeLeft === 0) {
+                        vm.questions.splice(vm.questions.indexOf(vm.currentQuestion), 1);
+                        vm.newQuestion();
+                    }
+                }, 1000);
             },
             showAnswer: function () {
                 this.isAnswerShown = true;
-                this.timer.pause();
-                this.timer = null;
+                clearInterval(this.interval);
+                this.interval = null;
             }
         }
     }
