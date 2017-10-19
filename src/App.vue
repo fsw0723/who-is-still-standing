@@ -1,34 +1,39 @@
 <template>
-    <div id="app">
-        <div v-if="currentQuestion">
-            <div v-if="questions.length === 0">
-                Game ended! Your score is: {{score}}
+    <b-row id="app">
+        <b-col cols="2"></b-col>
+        <b-col cols="8">
+            <div v-if="currentQuestion">
+                <div v-if="questions.length === 0">
+                    Game ended! Your score is: {{score}}
+                </div>
+                <div v-else>
+                    <button v-if="!pause" v-on:click="pauseTimer">Pause</button>
+                    <button v-if="pause" v-on:click="resumeTimer">Resume</button>
+                    <div>
+                        Score: {{score}}
+                    </div>
+                    <div>
+                        Time Left: {{timeLeft}}
+                    </div>
+                    <div>Question number: {{questionCount}}</div>
+                    <div>
+                        {{currentQuestion.subject}}
+                    </div>
+                    <div v-if="isAnswerShown">
+                        {{currentQuestion.answer}}
+                    </div>
+                    <button v-if="!isAnswerShown" v-on:click="showAnswer">Show Answer</button>
+                    <button v-if="isAnswerShown" v-on:click="correct">Correct</button>
+                    <button v-if="isAnswerShown" v-on:click="wrong">Wrong</button>
+                </div>
             </div>
             <div v-else>
-                <button v-if="!pause" v-on:click="pauseTimer">Pause</button>
-                <button v-if="pause" v-on:click="resumeTimer">Resume</button>
-                <div>
-                    Score: {{score}}
-                </div>
-                <div>
-                    Time Left: {{timeLeft}}
-                </div>
-                <div>Question number: {{questionCount}}</div>
-                <div>
-                    {{currentQuestion.subject}}
-                </div>
-                <div v-if="isAnswerShown">
-                    {{currentQuestion.answer}}
-                </div>
-                <button v-if="!isAnswerShown" v-on:click="showAnswer">Show Answer</button>
-                <button v-if="isAnswerShown" v-on:click="correct">Correct</button>
-                <button v-if="isAnswerShown" v-on:click="wrong">Wrong</button>
+                <Start/>
             </div>
-        </div>
-        <div v-else>
-            <Start/>
-        </div>
-    </div>
+        </b-col>
+        <b-col cols="2"></b-col>
+
+    </b-row>
 </template>
 
 <script>
