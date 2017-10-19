@@ -26,8 +26,7 @@
             </div>
         </div>
         <div v-else>
-            <textarea v-model="message" placeholder="add multiple lines"></textarea>
-            <button v-on:click="start">Start</button>
+            <Start/>
         </div>
     </div>
 </template>
@@ -35,8 +34,13 @@
 <script>
     import Question from './Question';
 
+    import Start from './components/Start.vue';
+
     export default {
         name: 'app',
+        components: {
+            Start
+        },
         data () {
             return {
                 questions: [],
