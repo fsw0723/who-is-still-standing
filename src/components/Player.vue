@@ -1,13 +1,15 @@
 <template>
-    <div>
-        <div>
-            {{player.score}}
-        </div>
-        <div>
+    <div class="player-section">
+        <h3 class="mb-5">
             {{player.name}}
-        </div>
+        </h3>
+        <h4>
+            Score: {{player.score}}
+        </h4>
 
-        <div v-if="player.shouldAnswer">Please answer</div>
+        <div v-if="player.shouldAnswer" class="text-primary my-3">
+            Please answer
+        </div>
     </div>
 </template>
 
@@ -25,6 +27,9 @@
     }
 </script>
 
-<style>
+<style lang="scss">
+    .player-section {
+        text-align: center;
+    }
 
 </style>

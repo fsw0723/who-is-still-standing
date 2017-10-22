@@ -1,9 +1,9 @@
 <template>
     <b-row id="app">
-        <b-col cols="2">
+        <b-col cols="3">
             <Player :player="player1"/>
         </b-col>
-        <b-col cols="8">
+        <b-col cols="6">
             <div v-if="currentQuestion">
                 <div v-if="questions.length === 0">
                     Game ended! Your score is: {{score}}
@@ -36,7 +36,7 @@
                 <Start @start="start"></Start>
             </div>
         </b-col>
-        <b-col cols="2">
+        <b-col cols="3">
             <Player :player="player2"/>
         </b-col>
 
