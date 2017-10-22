@@ -1,6 +1,8 @@
 <template>
     <b-row id="app">
-        <b-col cols="2"></b-col>
+        <b-col cols="2">
+            <Player :player="player1"/>
+        </b-col>
         <b-col cols="8">
             <div v-if="currentQuestion">
                 <div v-if="questions.length === 0">
@@ -34,22 +36,50 @@
                 <Start @start="start"></Start>
             </div>
         </b-col>
-        <b-col cols="2"></b-col>
+        <b-col cols="2">
+            <Player :player="player2"/>
+        </b-col>
 
     </b-row>
 </template>
 
 <script>
-    import Question from './Question';
+    import Question from './models/Question';
+    import PlayerModel from './models/Player';
 
     import Start from './components/Start.vue';
+    import Player from './components/Player.vue';
 
-    const QUESTION_TIME = 5;
+    const QUESTION_TIME = 20;
 
     export default {
         name: 'app',
         components: {
-            Start
+            Start,
+            Player
+        },
+        created() {
+            this.player1 = new PlayerModel('王呆子');
+            this.player2 = new PlayerModel('方聪明');
+        },
+        mounted() {
+            let vm = this;
+            window.onkeyup = function(e) {
+                if (vm.currentQuestion) {
+                    var key = e.keyCode ? e.keyCode : e.which;
+                    if (key === 83) {
+                        //keyboard press S
+                        console.log('current player1');
+                        vm.currentPlayer = vm.player1;
+                        vm.player1.setShouldAnswer(true);
+                    } else if (key === 76) {
+                        //keyboard press L
+                        console.log('current player2');
+                        vm.currentPlayer = vm.player2;
+                        vm.player1.setShouldAnswer(true);
+                    }
+                }
+            }
         },
         data () {
             return {
@@ -61,7 +91,10 @@
                 message: null,
                 interval: null,
                 timeLeft: QUESTION_TIME,
-                questionCount: 0
+                questionCount: 0,
+                player1: null,
+                player2: null,
+                currentPlayer: null
             }
         },
         methods: {
@@ -80,10 +113,7 @@
             },
             newQuestion: function () {
                 let vm = this;
-                if (this.interval) {
-                    clearInterval(this.interval);
-                    this.interval = null;
-                }
+                this.resetQuestion();
 
                 if (this.questions.length > 0) {
                     let index = Math.floor(Math.random() * this.questions.length);
@@ -102,6 +132,9 @@
             },
             correct: function () {
                 this.score++;
+                if (this.currentPlayer) {
+                    this.currentPlayer.addScore();
+                }
                 this.questions.splice(this.questions.indexOf(this.currentQuestion), 1);
                 this.newQuestion();
             },
@@ -129,6 +162,16 @@
                 this.isAnswerShown = true;
                 clearInterval(this.interval);
                 this.interval = null;
+            },
+            resetQuestion: function() {
+                if (this.interval) {
+                    clearInterval(this.interval);
+                    this.interval = null;
+                }
+                this.currentPlayer = null;
+                this.player1.setShouldAnswer(false);
+                this.player2.setShouldAnswer(false);
+
             }
         }
     }
