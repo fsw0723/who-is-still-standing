@@ -15,7 +15,8 @@
         },
         methods: {
             start: function() {
-                this.$emit('start');
+                let vm = this;
+                this.$emit('start', vm.message);
             }
         }
     }

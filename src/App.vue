@@ -7,28 +7,31 @@
                     Game ended! Your score is: {{score}}
                 </div>
                 <div v-else>
-                    <button v-if="!pause" v-on:click="pauseTimer">Pause</button>
-                    <button v-if="pause" v-on:click="resumeTimer">Resume</button>
-                    <div>
-                        Score: {{score}}
-                    </div>
                     <div>
                         Time Left: {{timeLeft}}
+                        <button v-if="!pause" v-on:click="pauseTimer" type="button" class="btn btn-danger">Pause</button>
+                        <button v-if="pause" v-on:click="resumeTimer" type="button" class="btn btn-success">Resume</button>
                     </div>
-                    <div>Question number: {{questionCount}}</div>
-                    <div>
-                        {{currentQuestion.subject}}
+                    <b-row align-h="between" class="my-3">
+                        <b-col cols="6">Question number: {{questionCount}}</b-col>
+                        <b-col cols="4">Score: {{score}}</b-col>
+                    </b-row>
+                    <div class="my-5">
+                        <h1>{{currentQuestion.subject}}</h1>
                     </div>
-                    <div v-if="isAnswerShown">
-                        {{currentQuestion.answer}}
+
+                    <div v-if="isAnswerShown" class="my-3">
+                        <h3>Answer: {{currentQuestion.answer}}</h3>
                     </div>
-                    <button v-if="!isAnswerShown" v-on:click="showAnswer">Show Answer</button>
-                    <button v-if="isAnswerShown" v-on:click="correct">Correct</button>
-                    <button v-if="isAnswerShown" v-on:click="wrong">Wrong</button>
+                    <button v-if="!isAnswerShown" v-on:click="showAnswer" type="button" class="w-100 btn btn-primary">Show Answer</button>
+                    <div class="w-100 d-inline-flex p-2 justify-content-center">
+                        <button v-if="isAnswerShown" v-on:click="correct" type="button" class="btn btn-success mx-2">Correct</button>
+                        <button v-if="isAnswerShown" v-on:click="wrong" type="button" class="btn btn-danger mx-2">Wrong</button>
+                    </div>
                 </div>
             </div>
             <div v-else>
-                <Start/>
+                <Start @start="start"></Start>
             </div>
         </b-col>
         <b-col cols="2"></b-col>
@@ -40,6 +43,8 @@
     import Question from './Question';
 
     import Start from './components/Start.vue';
+
+    const QUESTION_TIME = 5;
 
     export default {
         name: 'app',
@@ -55,14 +60,14 @@
                 pause: false,
                 message: null,
                 interval: null,
-                timeLeft: 20,
+                timeLeft: QUESTION_TIME,
                 questionCount: 0
             }
         },
         methods: {
-            start: function () {
+            start: function (message) {
                 let vm = this;
-                let messages = this.message.split('\n');
+                let messages = message.split('\n');
                 let i = 0;
                 while (i < messages.length) {
                     vm.questions.push(new Question(messages[i], messages[i + 1]));
@@ -84,7 +89,7 @@
                     let index = Math.floor(Math.random() * this.questions.length);
                     this.currentQuestion = this.questions[index];
                     this.isAnswerShown = false;
-                    this.timeLeft = 20;
+                    this.timeLeft = QUESTION_TIME;
                     this.questionCount ++;
                     vm.interval = setInterval(function() {
                         vm.timeLeft --;
@@ -130,13 +135,20 @@
 </script>
 
 <style lang="scss">
+    body {
+        background: #E9E0D6;
+    }
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        text-align: center;
         color: #2c3e50;
         margin-top: 60px;
+    }
+
+    h1, h2, h3 {
+        text-align: center;
     }
 
 </style>
