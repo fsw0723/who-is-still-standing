@@ -76,7 +76,7 @@
                         //keyboard press L
                         console.log('current player2');
                         vm.currentPlayer = vm.player2;
-                        vm.player1.setShouldAnswer(true);
+                        vm.player2.setShouldAnswer(true);
                     }
                 }
             }
