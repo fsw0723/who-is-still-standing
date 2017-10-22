@@ -65,7 +65,7 @@
         mounted() {
             let vm = this;
             window.onkeyup = function(e) {
-                if (vm.currentQuestion) {
+                if (vm.currentQuestion && !vm.currentPlayer) {
                     var key = e.keyCode ? e.keyCode : e.which;
                     if (key === 83) {
                         //keyboard press S
