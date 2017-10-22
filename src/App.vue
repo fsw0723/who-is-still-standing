@@ -178,10 +178,6 @@
 </script>
 
 <style lang="scss">
-    body {
-        background: #E9E0D6;
-    }
-
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
