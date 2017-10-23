@@ -18,18 +18,7 @@
                         <b-col cols="6">Question number: {{questionCount}}</b-col>
                         <b-col cols="4">Score: {{score}}</b-col>
                     </b-row>
-                    <div class="my-5">
-                        <h1>{{currentQuestion.subject}}</h1>
-                    </div>
-
-                    <div v-if="isAnswerShown" class="my-3">
-                        <h3>Answer: {{currentQuestion.answer}}</h3>
-                    </div>
-                    <button v-if="!isAnswerShown" v-on:click="showAnswer" type="button" class="w-100 btn btn-primary">Show Answer</button>
-                    <div class="w-100 d-inline-flex p-2 justify-content-center">
-                        <button v-if="isAnswerShown" v-on:click="correct" type="button" class="btn btn-success mx-2">Correct</button>
-                        <button v-if="isAnswerShown" v-on:click="wrong" type="button" class="btn btn-danger mx-2">Wrong</button>
-                    </div>
+                    <Question :question="currentQuestion"/>
                 </div>
             </div>
             <div v-else>
@@ -44,11 +33,14 @@
 </template>
 
 <script>
-    import Question from './models/Question';
-    import PlayerModel from './models/Player';
+    import QuestionModel from './models/question';
+    import PlayerModel from './models/player';
 
     import Start from './components/Start.vue';
     import Player from './components/Player.vue';
+    import Question from './components/Question.vue';
+
+    import EventBus from './event-bus';
 
     const QUESTION_TIME = 20;
 
@@ -56,7 +48,8 @@
         name: 'app',
         components: {
             Start,
-            Player
+            Player,
+            Question
         },
         created() {
             this.player1 = new PlayerModel('王呆子');
@@ -79,7 +72,19 @@
                         vm.player2.setShouldAnswer(true);
                     }
                 }
-            }
+            };
+
+            EventBus.$on('new-question', function() {
+                vm.newQuestion();
+            });
+
+            EventBus.$on('correct-answer', function() {
+                vm.correct();
+            });
+
+            EventBus.$on('wrong-answer', function() {
+                vm.wrong();
+            });
         },
         data () {
             return {
@@ -103,7 +108,7 @@
                 let messages = message.split('\n');
                 let i = 0;
                 while (i < messages.length) {
-                    vm.questions.push(new Question(messages[i], messages[i + 1]));
+                    vm.questions.push(new QuestionModel(messages[i], messages[i + 1]));
                     i += 2;
                     if (i === messages.length) {
                         this.newQuestion();
@@ -157,11 +162,6 @@
                         vm.newQuestion();
                     }
                 }, 1000);
-            },
-            showAnswer: function () {
-                this.isAnswerShown = true;
-                clearInterval(this.interval);
-                this.interval = null;
             },
             resetQuestion: function() {
                 if (this.interval) {
