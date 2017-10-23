@@ -1,35 +1,47 @@
 <template>
-    <b-row id="app">
-        <b-col cols="3">
-            <Player :player="player1"/>
-        </b-col>
-        <b-col cols="6">
-            <div v-if="currentQuestion">
-                <div v-if="questions.length === 0">
-                    Game ended! Your score is: {{score}}
+    <div id="app">
+        <b-row v-if="mode">
+            <b-col cols="3">
+                <Player :player="player1" v-if="mode==='battle'"/>
+            </b-col>
+            <b-col cols="6">
+                <div v-if="currentQuestion">
+                    <div v-if="questions.length === 0">
+                        Game ended! Your score is: {{score}}
+                    </div>
+                    <div v-else>
+                        <div>
+                            Time Left: {{timeLeft}}
+                            <button v-if="!pause" v-on:click="pauseTimer" type="button" class="btn btn-danger">Pause</button>
+                            <button v-if="pause" v-on:click="resumeTimer" type="button" class="btn btn-success">Resume</button>
+                        </div>
+                        <b-row align-h="between" class="my-3">
+                            <b-col cols="6">Question number: {{questionCount}}</b-col>
+                            <b-col cols="4">Score: {{score}}</b-col>
+                        </b-row>
+                        <Question :question="currentQuestion"/>
+                    </div>
                 </div>
                 <div v-else>
-                    <div>
-                        Time Left: {{timeLeft}}
-                        <button v-if="!pause" v-on:click="pauseTimer" type="button" class="btn btn-danger">Pause</button>
-                        <button v-if="pause" v-on:click="resumeTimer" type="button" class="btn btn-success">Resume</button>
-                    </div>
-                    <b-row align-h="between" class="my-3">
-                        <b-col cols="6">Question number: {{questionCount}}</b-col>
-                        <b-col cols="4">Score: {{score}}</b-col>
-                    </b-row>
-                    <Question :question="currentQuestion"/>
+                    <Start @start="start"></Start>
                 </div>
+            </b-col>
+            <b-col cols="3">
+                <Player :player="player2" v-if="mode==='battle'"/>
+            </b-col>
+        </b-row>
+        <div v-else class="d-flex justify-content-center mode-selector">
+            <div v-on:click="mode='single'" class="mode-selector__item">
+                <img src="./assets/one-person.png" class="img-fluid"/>
+                Single
             </div>
-            <div v-else>
-                <Start @start="start"></Start>
+            <div v-on:click="mode='battle'" class="mode-selector__item">
+                <img src="./assets/two-person.png" class="img-fluid"/>
+                Battle
             </div>
-        </b-col>
-        <b-col cols="3">
-            <Player :player="player2"/>
-        </b-col>
+        </div>
 
-    </b-row>
+    </div>
 </template>
 
 <script>
@@ -88,9 +100,9 @@
         },
         data () {
             return {
+                mode: null,
                 questions: [],
                 currentQuestion: null,
-                isAnswerShown: false,
                 score: 0,
                 pause: false,
                 message: null,
@@ -123,7 +135,6 @@
                 if (this.questions.length > 0) {
                     let index = Math.floor(Math.random() * this.questions.length);
                     this.currentQuestion = this.questions[index];
-                    this.isAnswerShown = false;
                     this.timeLeft = QUESTION_TIME;
                     this.questionCount ++;
                     vm.interval = setInterval(function() {
@@ -178,6 +189,8 @@
 </script>
 
 <style lang="scss">
+    $text-color: #777;
+
     #app {
         font-family: 'Avenir', Helvetica, Arial, sans-serif;
         -webkit-font-smoothing: antialiased;
@@ -188,6 +201,25 @@
 
     h1, h2, h3 {
         text-align: center;
+    }
+
+    .mode-selector__item {
+        border: 1px solid $text-color;
+        background: white;
+        width: 160px;
+        text-align: center;
+        margin: 12px;
+        font-size: 20px;
+        color: $text-color;
+        cursor: pointer;
+
+        &:hover {
+            -webkit-transform: scale(1.1);
+            -ms-transform: scale(1.1);
+            transform: scale(1.1);
+            transition: 0.5s ease;
+             box-shadow: 10px 10px 5px rgba(0, 0, 0, 0.2);
+        }
     }
 
 </style>
