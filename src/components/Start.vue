@@ -6,6 +6,8 @@
 </template>
 
 <script>
+    import QuestionModel from '../models/question';
+
     export default {
         name: 'start',
         data() {
@@ -16,7 +18,16 @@
         methods: {
             start: function() {
                 let vm = this;
-                this.$emit('start', vm.message);
+                let messages = vm.message.split('\n');
+                let i = 0;
+                let questions = [];
+                while (i < messages.length) {
+                    questions.push(new QuestionModel(messages[i], messages[i + 1]));
+                    i += 2;
+                    if (i === messages.length) {
+                        this.$emit('start', questions);
+                    }
+                }
             }
         }
     }

@@ -16,7 +16,6 @@
 </template>
 
 <script>
-    import Question from '../models/question';
     import EventBus from '../event-bus';
 
 
@@ -29,10 +28,6 @@
             }
         },
         methods: {
-            newQuestion: function () {
-                this.isAnswerShown = false;
-                EventBus.$emit('new-question');
-            },
             correct: function () {
                 this.isAnswerShown = false;
                 EventBus.$emit('correct-answer');

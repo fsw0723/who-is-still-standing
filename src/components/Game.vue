@@ -102,18 +102,9 @@
             }
         },
         methods: {
-            start: function (message) {
-                let vm = this;
-                let messages = message.split('\n');
-                let i = 0;
-                while (i < messages.length) {
-                    vm.questions.push(new QuestionModel(messages[i], messages[i + 1]));
-                    i += 2;
-                    if (i === messages.length) {
-                        this.newQuestion();
-                    }
-                }
-
+            start: function (questions) {
+                this.questions = questions;
+                this.newQuestion();
             },
             newQuestion: function () {
                 let vm = this;
