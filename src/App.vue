@@ -1,5 +1,8 @@
 <template>
     <div id="app">
+        <header>
+            <h1>谁是老大</h1>
+        </header>
         <div v-if="mode">
             <Game :mode="mode"/>
         </div>
@@ -34,22 +37,38 @@
 </script>
 
 <style lang="scss">
-    $text-color: #777;
+    $text-color: #484848;
 
     #app {
-        font-family: 'Avenir', Helvetica, Arial, sans-serif;
+        font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
-        color: #2c3e50;
-        margin-top: 60px;
+        color: $text-color;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 108px 0 48px 0;
     }
 
     h1, h2, h3 {
         text-align: center;
     }
 
+    header {
+        background: #29ABA4;
+        text-align: center;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        padding: 12px 24px;
+        color: white;
+    }
+
     .mode-selector__item {
-        border: 1px solid $text-color;
+        border: 1px solid #aaa;
         background: white;
         width: 160px;
         text-align: center;

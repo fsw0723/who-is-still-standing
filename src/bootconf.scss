@@ -1,3 +1,18 @@
 $body-bg: #E9E0D6;
 
+$theme-colors: (
+    primary: #44AAFF,
+    success: #29ABA4,
+    warning: #FFCC33,
+    danger: #EB7260
+) !default;
+
 @import '~bootstrap/scss/bootstrap.scss';
+
+.btn {
+  color: white;
+
+  &:hover {
+    color: white;
+  }
+}
