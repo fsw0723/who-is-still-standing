@@ -9,6 +9,10 @@ class Player {
         this.score++;
     }
 
+    deductScore() {
+        this.score--;
+    }
+
     setShouldAnswer(shouldAnswer) {
         this.shouldAnswer = shouldAnswer;
     }
