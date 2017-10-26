@@ -37,6 +37,8 @@
 </script>
 
 <style lang="scss">
+    @import './variables';
+
     $text-color: #484848;
 
     #app {
@@ -68,7 +70,8 @@
     }
 
     .mode-selector__item {
-        border: 1px solid #aaa;
+        border: 1px solid $border-color;
+        border-radius: 8px;
         background: white;
         width: 160px;
         text-align: center;

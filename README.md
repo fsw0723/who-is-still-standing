@@ -1,4 +1,4 @@
-# who-is-still-standing2
+# who-is-the-boss 谁是老大
 
 > A Vue.js project
 
