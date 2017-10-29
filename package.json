@@ -10,7 +10,10 @@
     "build": "node build/build.js"
   },
   "dependencies": {
+    "axios": "^0.17.0",
     "bootstrap-vue": "^1.0.0-beta.9",
+    "filereader": "^0.10.3",
+    "muse-ui": "^2.1.0",
     "vue": "^2.5.2"
   },
   "devDependencies": {

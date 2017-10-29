@@ -2,6 +2,8 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue';
 import BootstrapVue from 'bootstrap-vue';
+import MuseUI from 'muse-ui';
+import 'muse-ui/dist/muse-ui.css';
 import App from './App';
 
 import './bootconf.scss';
@@ -17,6 +19,8 @@ Vue.component = function(name, definition) {
     originalVueComponent.apply(this, [name, definition])
 };
 Vue.use(BootstrapVue);
+Vue.use(MuseUI);
+
 Vue.component = originalVueComponent;
 
 /* eslint-disable no-new */
