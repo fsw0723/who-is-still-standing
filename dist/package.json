@@ -1,8 +1,8 @@
 {
-  "name": "Who-is-still-standing",
+  "name": "Who-is-the-boss",
   "version": "1.0.0",
   "description": "Game",
-  "author": "Fang ShuweI",
+  "author": "Fang Shuwei",
   "private": true,
   "scripts": {
     "postinstall": "npm install express"
