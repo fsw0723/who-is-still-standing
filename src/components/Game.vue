@@ -52,8 +52,8 @@
         },
         props: ['mode'],
         created() {
-            this.player1 = new PlayerModel('王呆子');
-            this.player2 = new PlayerModel('方聪明');
+            this.player1 = new PlayerModel(require('../assets/animal-avatar1.png'));
+            this.player2 = new PlayerModel(require('../assets/animal-avatar2.png'));
         },
         mounted() {
             let vm = this;

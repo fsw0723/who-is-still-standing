@@ -1,7 +1,7 @@
 <template>
     <div class="player-section">
         <h3 class="mb-5">
-            {{player.name}}
+            <img :src="player.avatar" alt="avatar" class="img-fluid">
         </h3>
         <h4>
             Score: {{player.score}}

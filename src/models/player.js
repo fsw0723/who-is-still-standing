@@ -1,6 +1,6 @@
 class Player {
-    constructor(name) {
-        this.name = name;
+    constructor(avatar) {
+        this.avatar = avatar;
         this.score = 0;
         this.shouldAnswer = false;
     }

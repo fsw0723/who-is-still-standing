@@ -1,12 +1,14 @@
 <template>
     <div class="mx-3">
+        Select a question set
         <div>
             <mu-radio label="百科知识问答1" name="group" nativeValue="百科知识问答1" v-model="inputFile" class="demo-radio"/> <br/>
             <mu-radio label="测试" name="group" nativeValue="test" v-model="inputFile"  class="demo-radio"/> <br/>
         </div>
-        <textarea class="w-100" rows="20" v-model="message" placeholder="Input question and answers here"></textarea>
+        or upload your own questions
+        <!--<textarea class="w-100" rows="20" v-model="message" placeholder="Input question and answers here"></textarea>-->
+        <input type="file" @change="handleUpload"/>
         <button type="button" class="w-100 btn btn-primary btn-lg mt-3" v-on:click="start">Start</button>
-        <!--<input type="file" @change="handleUpload"/>-->
     </div>
 </template>
 
@@ -26,10 +28,11 @@
         },
         methods: {
             handleUpload: function(e){
-                var files =  e.target.files;
-                var reader = new window.FileReader();
+                let vm = this;
+                let files =  e.target.files;
+                let reader = new window.FileReader();
                 reader.addEventListener('load', function(){
-                    console.log(reader.result);
+                    vm.message = reader.result;
                 });
                 reader.readAsText(files[0]);
             },
@@ -52,7 +55,6 @@
                 let i = 0;
                 let questions = [];
                 while (i < messages.length) {
-                    console.log(i);
                     questions.push(new QuestionModel(messages[i], messages[i + 1]));
                     i += 2;
                     if (i === messages.length) {
