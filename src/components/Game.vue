@@ -6,7 +6,14 @@
         <b-col cols="6">
             <div v-if="currentQuestion">
                 <div v-if="questions.length === 0">
-                    Game ended! Your score is: {{score}}
+                    <div>
+                        Game ended!
+                    </div>
+                    <div v-if="isSingleMode()">
+                        Your score is: {{score}}
+                    </div>
+                    <div v-else v-html="generateResult()">{{generateResult()}}</div>
+                    <button type="button" class="btn btn-primary" v-on:click="resetGame">New game</button>
                 </div>
                 <div v-else>
                     <div>
@@ -52,8 +59,7 @@
         },
         props: ['mode'],
         created() {
-            this.player1 = new PlayerModel(require('../assets/animal-avatar1.png'));
-            this.player2 = new PlayerModel(require('../assets/animal-avatar2.png'));
+            this.initPlayers();
         },
         mounted() {
             let vm = this;
@@ -87,6 +93,10 @@
             EventBus.$on('wrong-answer', function() {
                 vm.wrong();
             });
+
+            EventBus.$on('new-game', function() {
+                vm.resetGame();
+            });
         },
         data () {
             return {
@@ -105,6 +115,10 @@
             }
         },
         methods: {
+            initPlayers: function() {
+                this.player1 = new PlayerModel(require('../assets/animal-avatar1.png'));
+                this.player2 = new PlayerModel(require('../assets/animal-avatar2.png'));
+            },
             start: function (questions) {
                 this.questions = questions;
                 this.newQuestion();
@@ -172,6 +186,26 @@
             },
             isBattleMode: function() {
                 return this.mode === 'battle';
+            },
+            generateResult: function() {
+                if (this.player1.score > this.player2.score) {
+                    return `The winner is: <img src="${this.player1.avatar}" alt="avatar" height="60">`;
+                } else if (this.player1.score < this.player2.score) {
+                    return `The winner is: <img src="${this.player2.avatar}" alt="avatar" height="60">`;
+                } else {
+                    return 'It\'s a tie!';
+                }
+
+            },
+            resetGame: function() {
+                this.questions = [];
+                this.currentQuestion = null;
+                this.score = 0; 
+                this.pause = false;
+                this.message = null;
+                this.questionCount = 0;
+                this.initPlayers();
+                this.resetQuestion();
             }
         }
     }

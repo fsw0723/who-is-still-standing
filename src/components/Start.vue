@@ -1,14 +1,22 @@
 <template>
     <div class="mx-3">
-        Select a question set
-        <div>
-            <mu-radio label="百科知识问答1" name="group" nativeValue="百科知识问答1" v-model="inputFile" class="demo-radio"/> <br/>
-            <mu-radio label="测试" name="group" nativeValue="test" v-model="inputFile"  class="demo-radio"/> <br/>
+        <section>
+            Select a question set
+            <div>
+                <mu-radio label="百科知识问答1" name="group" nativeValue="百科知识问答1" v-model="inputFile" class="demo-radio"/> <br/>
+                <mu-radio label="测试" name="group" nativeValue="test" v-model="inputFile"  class="demo-radio"/> <br/>
+            </div>
+        </section>
+
+        <div class="divider">
+            or
         </div>
-        or upload your own questions
+        <div>
+            upload your own questions
+        </div>
         <!--<textarea class="w-100" rows="20" v-model="message" placeholder="Input question and answers here"></textarea>-->
         <input type="file" @change="handleUpload"/>
-        <button type="button" class="w-100 btn btn-primary btn-lg mt-3" v-on:click="start">Start</button>
+        <button type="button" class="w-100 btn btn-primary btn-lg mt-3" v-on:click="start" :disabled="!message && !inputFile">Start</button>
     </div>
 </template>
 
@@ -40,7 +48,7 @@
                 let vm = this;
                 if (vm.message) {
                     vm.processQuestions();
-                } else if (this.inputFile) {
+                } else if (vm.inputFile) {
                     axios.get(`/static/${vm.inputFile}.txt`).then(response => {
                         vm.message = response.data;
                         vm.processQuestions();
@@ -68,5 +76,8 @@
 </script>
 
 <style>
+    .divider {
+        margin: 12px 0;
+    }
 
 </style>

@@ -12,6 +12,8 @@
             <button v-if="isAnswerShown" v-on:click="correct" type="button" class="btn btn-success mx-2">Correct</button>
             <button v-if="isAnswerShown" v-on:click="wrong" type="button" class="btn btn-danger mx-2">Wrong</button>
         </div>
+        <button type="button" class="btn btn-danger" v-on:click="skip">Skip</button>
+        <button type="button" class="btn btn-warning" v-on:click="restart">Restart</button>
     </div>
 </template>
 
@@ -38,6 +40,12 @@
             },
             showAnswer: function () {
                 this.isAnswerShown = true;
+            },
+            skip: function() {
+                EventBus.$emit('new-question');
+            },
+            restart: function() {
+                EventBus.$emit('new-game');
             }
         }
     }
